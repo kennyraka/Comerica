@@ -12,12 +12,16 @@ export function LoginForm({ onLogin }: LoginFormProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (onLogin) {
+    if (isFormValid && onLogin) {
       onLogin();
     }
   };
 
-  const isFormValid = userId.trim().length > 0 && password.trim().length > 0;
+  const isFormValid = 
+    userId.trim().length >= 5 && 
+    userId.trim().length <= 30 && 
+    password.trim().length >= 5 && 
+    password.trim().length <= 30;
 
   return (
     <div className="bg-white w-full max-w-[420px] shadow-sm flex flex-col font-sans border border-gray-300">
@@ -48,6 +52,9 @@ export function LoginForm({ onLogin }: LoginFormProps) {
                 id="userId"
                 type="text"
                 value={userId}
+                minLength={5}
+                maxLength={30}
+                required
                 onChange={(e) => setUserId(e.target.value)}
                 className="border border-[#999999] px-1.5 py-0.5 w-[210px] bg-white focus:outline-none focus:border-[#00529b]" />
               <span className="text-[#CC0000] ml-1 font-bold">*</span>
@@ -73,6 +80,9 @@ export function LoginForm({ onLogin }: LoginFormProps) {
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   value={password}
+                  minLength={5}
+                  maxLength={30}
+                  required
                   onChange={(e) => setPassword(e.target.value)}
                   className="border border-[#999999] px-1.5 py-0.5 w-full pr-7 bg-white focus:outline-none focus:border-[#00529b]" />
                 <button
@@ -95,8 +105,9 @@ export function LoginForm({ onLogin }: LoginFormProps) {
           <div className="pt-2">
             <button
               type="submit"
+              disabled={!isFormValid}
               className={`${
-                isFormValid ? 'bg-[#a23232] hover:bg-[#8e2b2b]' : 'bg-[#666666] hover:bg-[#555555]'
+                isFormValid ? 'bg-[#a23232] hover:bg-[#8e2b2b]' : 'bg-[#666666] opacity-70'
               } text-white px-8 py-1.5 text-sm font-semibold transition-colors min-w-[100px] shadow-sm`}>
               Log In
             </button>

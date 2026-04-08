@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  body {
+    @apply text-gray-800 antialiased;
+  }
+}

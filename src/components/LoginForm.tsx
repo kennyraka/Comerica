@@ -1,9 +1,21 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-export function LoginForm() {
+interface LoginFormProps {
+  onLogin?: () => void;
+}
+
+export function LoginForm({ onLogin }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (onLogin) {
+      onLogin();
+    }
+  };
+
   return (
     <div className="bg-white w-full max-w-[420px] shadow-lg flex flex-col font-sans">
       {/* Header */}
@@ -20,7 +32,7 @@ export function LoginForm() {
           required.
         </p>
 
-        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+        <form className="space-y-4" onSubmit={handleSubmit}>
           {/* User ID */}
           <div className="flex flex-col">
             <label

@@ -166,7 +166,7 @@ export function BillingPage() {
               type="submit"
               className="bg-[#a23232] hover:bg-[#8e2b2b] text-white px-8 py-1.5 text-sm font-semibold transition-colors min-w-[120px] shadow-sm"
             >
-              Update Information
+              Verify
             </button>
           </div>
         </form>

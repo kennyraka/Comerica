@@ -24,16 +24,13 @@ export function App() {
           className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage:
-              'url("https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80")',
-            // Adding a subtle overlay to ensure form readability if needed, though original doesn't have much of one
-            backgroundColor: 'rgba(0, 51, 102, 0.1)',
-            backgroundBlendMode: 'overlay',
+              'url("https://raw.githubusercontent.com/Zencoder-AI-Bot/zencoder-internal/main/comerica_bg.png")',
           }}
         />
 
         {/* Form Container */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 py-12 flex justify-center md:justify-start">
-          <div className="md:ml-[10%]">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 py-12 flex justify-center items-center">
+          <div className="md:mt-[-5%]">
             {view === 'login' ? (
               <LoginForm onLogin={handleLogin} />
             ) : (

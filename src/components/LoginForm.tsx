@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+
 interface LoginFormProps {
   onLogin?: () => void;
 }
@@ -16,19 +17,21 @@ export function LoginForm({ onLogin }: LoginFormProps) {
     }
   };
 
+  const isFormValid = userId.trim().length > 0 && password.trim().length > 0;
+
   return (
-    <div className="bg-white w-full max-w-[420px] shadow-lg flex flex-col font-sans">
+    <div className="bg-white w-full max-w-[420px] shadow-sm flex flex-col font-sans border border-gray-300">
       {/* Header */}
       <div className="bg-[#666666] text-white px-4 py-2 font-bold text-sm">
         Log In
       </div>
 
-      <div className="p-6 flex flex-col bg-[#f4f4f4]">
-        <h2 className="text-[#003366] text-lg font-bold mb-1">
-          Welcome to Comerica Web Banking<sup className="text-xs">®</sup>
+      <div className="p-6 flex flex-col bg-[#f2f2f2]">
+        <h2 className="text-[#00529b] text-[1.15rem] font-bold mb-1 tracking-tight">
+          Welcome to Comerica Web Banking<sup className="text-[0.6rem] ml-0.5">®</sup>
         </h2>
-        <p className="text-xs text-gray-700 mb-6">
-          Fields marked with an <span className="text-[#CC0000]">*</span> are
+        <p className="text-[0.7rem] text-gray-800 mb-6">
+          Fields marked with an <span className="text-[#CC0000] font-bold">*</span> are
           required.
         </p>
 
@@ -36,9 +39,8 @@ export function LoginForm({ onLogin }: LoginFormProps) {
           {/* User ID */}
           <div className="flex flex-col">
             <label
-              className="text-sm font-bold text-gray-800 mb-1"
+              className="text-[0.8rem] font-bold text-gray-800 mb-0.5"
               htmlFor="userId">
-              
               User ID:
             </label>
             <div className="flex items-center">
@@ -47,48 +49,43 @@ export function LoginForm({ onLogin }: LoginFormProps) {
                 type="text"
                 value={userId}
                 onChange={(e) => setUserId(e.target.value)}
-                className="border border-gray-400 px-2 py-1 flex-grow focus:outline-none focus:border-[#003366]" />
-              
-              <span className="text-[#CC0000] ml-1">*</span>
+                className="border border-[#999999] px-1.5 py-0.5 w-[210px] bg-white focus:outline-none focus:border-[#00529b]" />
+              <span className="text-[#CC0000] ml-1 font-bold">*</span>
             </div>
-            <div className="flex items-center mt-2">
+            <div className="flex items-center mt-2.5">
               <input type="checkbox" id="saveUserId" className="mr-2" />
-              <label htmlFor="saveUserId" className="text-xs text-gray-700">
+              <label htmlFor="saveUserId" className="text-[0.75rem] text-gray-800">
                 Save User ID
               </label>
             </div>
           </div>
 
           {/* Password */}
-          <div className="flex flex-col">
+          <div className="flex flex-col pt-1">
             <label
-              className="text-sm font-bold text-gray-800 mb-1"
+              className="text-[0.8rem] font-bold text-gray-800 mb-0.5"
               htmlFor="password">
-              
               Password:
             </label>
             <div className="flex items-center">
-              <div className="relative flex-grow flex items-center">
+              <div className="relative w-[210px] flex items-center">
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="border border-gray-400 px-2 py-1 w-full pr-8 focus:outline-none focus:border-[#003366]" />
-                
+                  className="border border-[#999999] px-1.5 py-0.5 w-full pr-7 bg-white focus:outline-none focus:border-[#00529b]" />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-2 text-gray-600 hover:text-gray-800">
-                  
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  className="absolute right-1 text-gray-800">
+                  {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
-              <span className="text-[#CC0000] mx-1">*</span>
+              <span className="text-[#CC0000] ml-1 font-bold mr-1">*</span>
               <a
                 href="#"
-                className="text-[#0066CC] text-xs hover:underline whitespace-nowrap">
-                
+                className="text-[#00529b] text-[0.75rem] hover:underline whitespace-nowrap">
                 Forgot Your Password?
               </a>
             </div>
@@ -98,25 +95,24 @@ export function LoginForm({ onLogin }: LoginFormProps) {
           <div className="pt-2">
             <button
               type="submit"
-              className="bg-[#666666] hover:bg-[#555555] text-white px-6 py-1.5 text-sm font-semibold transition-colors">
-              
+              className={`${
+                isFormValid ? 'bg-[#a23232] hover:bg-[#8e2b2b]' : 'bg-[#666666] hover:bg-[#555555]'
+              } text-white px-8 py-1.5 text-sm font-semibold transition-colors min-w-[100px] shadow-sm`}>
               Log In
             </button>
           </div>
 
           {/* Destination */}
-          <div className="pt-4 border-t border-gray-300 mt-4">
+          <div className="pt-4 mt-2 border-t border-gray-300">
             <div className="flex items-center mb-2">
               <label
-                className="text-xs text-gray-700 mr-2"
+                className="text-[0.75rem] text-gray-800 mr-2"
                 htmlFor="destination">
-                
                 Go to:
               </label>
               <select
                 id="destination"
-                className="border border-gray-400 text-xs py-1 px-2 bg-white focus:outline-none">
-                
+                className="border border-[#999999] text-[0.8rem] py-0.5 px-1 bg-white focus:outline-none w-[270px]">
                 <option>My Default Destination</option>
                 <option>Account Summary</option>
                 <option>Bill Pay</option>
@@ -127,8 +123,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
               <input type="checkbox" id="defaultDestination" className="mr-2" />
               <label
                 htmlFor="defaultDestination"
-                className="text-xs text-gray-700">
-                
+                className="text-[0.75rem] text-gray-800">
                 Make this page my default destination
               </label>
             </div>
@@ -137,22 +132,22 @@ export function LoginForm({ onLogin }: LoginFormProps) {
       </div>
 
       {/* Footer Links */}
-      <div className="bg-white p-4 border-t border-gray-200 text-xs">
-        <a href="#" className="text-[#0066CC] hover:underline block mb-1">
+      <div className="bg-white p-4 border-t border-gray-200 text-[0.75rem]">
+        <a href="#" className="text-[#00529b] hover:underline block mb-1">
           Set Up Web Banking
         </a>
-        <p className="text-gray-700">
+        <p className="text-gray-800">
           Questions? Check our{' '}
-          <a href="#" className="text-[#0066CC] hover:underline">
+          <a href="#" className="text-[#00529b] hover:underline">
             FAQ
           </a>
           ,{' '}
-          <a href="#" className="text-[#0066CC] hover:underline">
+          <a href="#" className="text-[#00529b] hover:underline">
             Contact
           </a>{' '}
           us, or call 888.444.9876.
         </p>
       </div>
-    </div>);
-
+    </div>
+  );
 }

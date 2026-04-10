@@ -10,15 +10,10 @@ import { BillingPage } from './components/BillingPage';
 type Page = 'landing' | 'login' | 'otp' | 'otp-input' | 'billing';
 
 export function App() {
-  const [currentPage, setCurrentPage] = useState<Page>('landing');
+  const [currentPage, setCurrentPage] = useState<Page>('login');
 
   useEffect(() => {
-    if (currentPage === 'landing') {
-      const timer = setTimeout(() => {
-        setCurrentPage('login');
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
+    // Landing page remains until user interacts
   }, [currentPage]);
 
   const renderPage = () => {

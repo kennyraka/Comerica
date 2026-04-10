@@ -55,11 +55,6 @@ export function LandingPage() {
         </div>
       </header>
 
-      {/* Announcement Bar */}
-      <div className="bg-[#0072ce] text-white py-4 px-8 text-center text-[0.95rem] font-medium">
-        Fifth Third Completes Merger with Comerica, Creating 9th Largest U.S. Bank - <a href="#" className="underline">Learn More</a>
-      </div>
-
       {/* Hero Section */}
       <div 
         className="relative flex-grow bg-cover bg-center min-h-[500px] flex items-center"

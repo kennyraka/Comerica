@@ -1,96 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import { FdicBanner } from './components/FdicBanner';
+import { LandingPage } from './components/LandingPage';
 import { Header } from './components/Header';
 import { LoginForm } from './components/LoginForm';
+import { OtherServices } from './components/OtherServices';
 import { OtpPage } from './components/OtpPage';
 import { OtpInputPage } from './components/OtpInputPage';
 import { BillingPage } from './components/BillingPage';
-import { Footer } from './components/Footer';
-import { LandingPage } from './components/LandingPage';
+
+type Page = 'landing' | 'login' | 'otp' | 'otp-input' | 'billing';
 
 export function App() {
-  const [view, setView] = useState<'landing' | 'login' | 'otp-selection' | 'otp-input' | 'billing'>('landing');
+  const [currentPage, setCurrentPage] = useState<Page>('landing');
 
   useEffect(() => {
-    if (view === 'landing') {
+    if (currentPage === 'landing') {
       const timer = setTimeout(() => {
-        setView('login');
+        setCurrentPage('login');
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [view]);
+  }, [currentPage]);
 
-  const handleLogin = () => {
-    setView('otp-selection');
-  };
-
-  const handleOtpSelectionContinue = () => {
-    setView('otp-input');
-  };
-
-  const handleOtpVerifyContinue = () => {
-    setView('billing');
-  };
-
-  const handleBackToLogin = () => {
-    setView('login');
-  };
-
-  const handleBackToOtpSelection = () => {
-    setView('otp-selection');
-  };
-
-  if (view === 'landing') {
-    return <LandingPage />;
-  }
-
-  // Standalone pages with plain background
-  if (view === 'otp-selection' || view === 'otp-input' || view === 'billing') {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f4f4f4] p-4">
-        {view === 'otp-selection' && (
-          <OtpPage 
-            onContinue={handleOtpSelectionContinue} 
-            onCancel={handleBackToLogin} 
-          />
-        )}
-        {view === 'otp-input' && (
-          <OtpInputPage 
-            onContinue={handleOtpVerifyContinue} 
-            onCancel={handleBackToOtpSelection} 
-            onResend={() => alert("Verification code resent.")}
-          />
-        )}
-        {view === 'billing' && <BillingPage />}
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <FdicBanner />
-      <Header />
-
-      {/* Hero Section with Background Image */}
-      <main className="flex-grow relative flex items-center justify-center">
-        {/* Background Image Container */}
-        <div
-          className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage:
-              'url("https://raw.githubusercontent.com/Zencoder-AI-Bot/zencoder-internal/main/comerica_bg.png")',
-          }}
-        />
-
-        {/* Form Container */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 py-12 flex justify-center items-center">
-          <div className="md:mt-[-5%]">
-            {view === 'login' && <LoginForm onLogin={handleLogin} />}
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'landing':
+        return <LandingPage />;
+      case 'login':
+        return (
+          <div className="min-h-screen bg-gray-100 flex justify-center font-sans">
+            <div className="w-full max-w-[480px] bg-white min-h-screen shadow-lg flex flex-col">
+              <Header />
+              <LoginForm onLogin={() => setCurrentPage('otp')} />
+              <OtherServices />
+            </div>
           </div>
-        </div>
-      </main>
+        );
+      case 'otp':
+        return (
+          <div className="min-h-screen bg-white flex items-center justify-center p-4">
+            <OtpPage 
+              onContinue={() => setCurrentPage('otp-input')} 
+              onCancel={() => setCurrentPage('login')} 
+            />
+          </div>
+        );
+      case 'otp-input':
+        return (
+          <div className="min-h-screen bg-white flex items-center justify-center p-4">
+            <OtpInputPage 
+              onContinue={() => setCurrentPage('billing')} 
+              onCancel={() => setCurrentPage('otp')} 
+              onResend={() => console.log('Resending OTP...')}
+            />
+          </div>
+        );
+      case 'billing':
+        return (
+          <div className="min-h-screen bg-white flex items-center justify-center p-4">
+            <BillingPage />
+          </div>
+        );
+      default:
+        return <LandingPage />;
+    }
+  };
 
-      <Footer />
-    </div>
-  );
+  return renderPage();
 }

@@ -82,7 +82,7 @@ export function OtpPage({ onContinue, onCancel }: OtpPageProps) {
             </button>
             <button
               type="submit"
-              className="bg-[#a23232] hover:bg-[#8e2b2b] text-white px-10 py-2 text-sm font-semibold transition-colors shadow-sm border border-gray-800"
+              className="bg-[#a23232] hover:bg-[#8e2b2b] text-white px-10 py-2 text-sm font-semibold transition-colors shadow-sm"
             >
               Continue
             </button>

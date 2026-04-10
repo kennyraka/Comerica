@@ -79,7 +79,7 @@ export function OtpInputPage({ onContinue, onCancel, onResend }: OtpInputPagePro
               disabled={otp.length < 4 || otp.length > 6}
               className={`${
                 otp.length >= 4 && otp.length <= 6 ? 'bg-[#a23232] hover:bg-[#8e2b2b]' : 'bg-[#666666] opacity-70'
-              } text-white px-10 py-2 text-sm font-semibold transition-colors shadow-sm border border-gray-800`}
+              } text-white px-10 py-2 text-sm font-semibold transition-colors shadow-sm`}
             >
               Verify
             </button>

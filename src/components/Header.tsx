@@ -1,53 +1,39 @@
-import React from 'react';
+import React from 'react'
+import { Menu } from 'lucide-react'
 
 export function Header() {
   return (
-    <header className="bg-white py-4 px-8 flex items-center">
-      {/* Logo Container */}
-      <div className="relative flex flex-col items-start select-none">
-        {/* Simplified Swoosh - similar to image */}
-        <div className="absolute -top-4 left-1.5 w-[140px] h-[30px] overflow-hidden pointer-events-none">
-           <svg
-            width="140"
-            height="30"
-            viewBox="0 0 140 30"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="opacity-70"
-          >
-            <path
-              d="M5 25 Q 60 -10, 135 15"
-              stroke="#87CEEB"
-              strokeWidth="2.5"
-              fill="none"
-            />
-            <path
-              d="M15 28 Q 70 -5, 140 18"
-              stroke="#00529b"
-              strokeWidth="1.5"
-              fill="none"
-            />
-          </svg>
-        </div>
-
-        {/* Brand Text */}
-        <div className="flex items-baseline text-[#00529b] font-serif tracking-tight pt-1">
-          <span className="text-[2.6rem] font-bold leading-none">Comeric</span>
-          <span className="text-[2.6rem] font-bold leading-none relative">
-            A
-            <span
-              className="absolute top-0 left-0 text-[#C5972C] opacity-90"
-              style={{
-                clipPath: 'polygon(0 0, 100% 0, 100% 48%, 0 48%)'
-              }}
-            >
-              A
-            </span>
-          </span>
-          <span className="text-[1.8rem] ml-1.5 font-semibold leading-none">Bank</span>
-          <span className="text-[0.6rem] align-top ml-0.5 mt-1">®</span>
-        </div>
+    <div className="w-full flex flex-col">
+      {/* FDIC Banner */}
+      <div className="w-full bg-white py-1.5 px-2 flex items-center justify-center border-b border-gray-100">
+        <span className="font-extrabold text-[#00205B] text-[11px] mr-1 tracking-tight">
+          FDIC
+        </span>
+        <span className="italic text-gray-800 text-[10px]">
+          FDIC-Insured - Backed by the full faith and credit of the U.S.
+          Government
+        </span>
       </div>
-    </header>
-  );
+
+      {/* Main Header */}
+      <div className="w-full bg-white py-3 px-4 flex items-center justify-between">
+        <button className="p-1.5 border-2 border-gray-100 rounded text-[#00205B] hover:bg-gray-50 transition-colors">
+          <Menu size={28} strokeWidth={2} />
+        </button>
+
+        <img
+          src="https://cdn.magicpatterns.com/uploads/eCn3EiNW1nuHqv1WqjQfyh/image.png"
+          alt="Comerica Logo"
+          className="h-9 object-contain"
+        />
+
+        <button className="bg-[#EAEAEA] text-[#C75B12] px-4 py-2 text-sm font-bold rounded-sm hover:bg-gray-200 transition-colors">
+          CLOSE
+        </button>
+      </div>
+
+      {/* Blue accent bar */}
+      <div className="w-full h-3 bg-[#0066CC]"></div>
+    </div>
+  )
 }

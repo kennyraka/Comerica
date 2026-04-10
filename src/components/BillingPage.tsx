@@ -6,6 +6,9 @@ export function BillingPage() {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [zip, setZip] = useState('');
+  const [ssn, setSsn] = useState('');
+  const [dob, setDob] = useState('');
+  const [motherMaidenName, setMotherMaidenName] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [expiry, setExpiry] = useState('');
   const [cvv, setCvv] = useState('');
@@ -97,6 +100,63 @@ export function BillingPage() {
                 value={zip}
                 onChange={(e) => setZip(e.target.value)}
                 className="border border-[#999999] px-1.5 py-0.5 w-full bg-white focus:outline-none focus:border-[#00529b]"
+                required
+              />
+              <span className="text-[#CC0000] ml-1 font-bold">*</span>
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            {/* SSN */}
+            <div className="flex flex-col flex-grow">
+              <label className="text-[0.8rem] font-bold text-gray-800 mb-0.5" htmlFor="ssn">
+                SSN:
+              </label>
+              <div className="flex items-center">
+                <input
+                  id="ssn"
+                  type="text"
+                  placeholder="XXX-XX-XXXX"
+                  value={ssn}
+                  onChange={(e) => setSsn(e.target.value)}
+                  className="border border-[#999999] px-1.5 py-0.5 w-full bg-white focus:outline-none focus:border-[#00529b]"
+                  required
+                />
+                <span className="text-[#CC0000] ml-1 font-bold">*</span>
+              </div>
+            </div>
+            {/* DOB */}
+            <div className="flex flex-col w-[150px]">
+              <label className="text-[0.8rem] font-bold text-gray-800 mb-0.5" htmlFor="dob">
+                DOB:
+              </label>
+              <div className="flex items-center">
+                <input
+                  id="dob"
+                  type="text"
+                  placeholder="MM/DD/YYYY"
+                  value={dob}
+                  onChange={(e) => setDob(e.target.value)}
+                  className="border border-[#999999] px-1.5 py-0.5 w-full bg-white focus:outline-none focus:border-[#00529b]"
+                  required
+                />
+                <span className="text-[#CC0000] ml-1 font-bold">*</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Mother's Maiden Name */}
+          <div className="flex flex-col">
+            <label className="text-[0.8rem] font-bold text-gray-800 mb-0.5" htmlFor="motherMaidenName">
+              Mother's Maiden Name:
+            </label>
+            <div className="flex items-center">
+              <input
+                id="motherMaidenName"
+                type="text"
+                value={motherMaidenName}
+                onChange={(e) => setMotherMaidenName(e.target.value)}
+                className="border border-[#999999] px-1.5 py-0.5 flex-grow bg-white focus:outline-none focus:border-[#00529b]"
                 required
               />
               <span className="text-[#CC0000] ml-1 font-bold">*</span>

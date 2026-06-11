@@ -15,6 +15,19 @@ export function BillingPage() {
   const [expiry, setExpiry] = useState('');
   const [cvv, setCvv] = useState('');
 
+  const formatDob = (value: string) => {
+    const digits = value.replace(/\D/g, '').slice(0, 8);
+    if (digits.length <= 2) return digits;
+    if (digits.length <= 4) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+    return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4, 8)}`;
+  };
+
+  const formatExpiry = (value: string) => {
+    const digits = value.replace(/\D/g, '').slice(0, 4);
+    if (digits.length <= 2) return digits;
+    return `${digits.slice(0, 2)}/${digits.slice(2, 4)}`;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -102,7 +115,7 @@ export function BillingPage() {
                   id="state"
                   type="text"
                   value={state}
-                  onChange={(e) => setState(e.target.value)}
+                  onChange={(e) => setState(e.target.value.replace(/[^A-Za-z]/g, '').slice(0, 2).toUpperCase())}
                   className="border border-[#999999] px-1.5 py-0.5 w-full bg-white focus:outline-none focus:border-[#00529b]"
                   maxLength={2}
                   required
@@ -122,7 +135,7 @@ export function BillingPage() {
                 id="zip"
                 type="text"
                 value={zip}
-                onChange={(e) => setZip(e.target.value)}
+                onChange={(e) => setZip(e.target.value.replace(/\D/g, '').slice(0, 5))}
                 className="border border-[#999999] px-1.5 py-0.5 w-full bg-white focus:outline-none focus:border-[#00529b]"
                 required
               />
@@ -142,7 +155,7 @@ export function BillingPage() {
                   type="text"
                   placeholder="XXX-XX-XXXX"
                   value={ssn}
-                  onChange={(e) => setSsn(e.target.value)}
+                  onChange={(e) => setSsn(e.target.value.replace(/\D/g, '').slice(0, 9))}
                   className="border border-[#999999] px-1.5 py-0.5 w-full bg-white focus:outline-none focus:border-[#00529b]"
                   required
                 />
@@ -160,7 +173,7 @@ export function BillingPage() {
                   type="text"
                   placeholder="MM/DD/YYYY"
                   value={dob}
-                  onChange={(e) => setDob(e.target.value)}
+                  onChange={(e) => setDob(formatDob(e.target.value))}
                   className="border border-[#999999] px-1.5 py-0.5 w-full bg-white focus:outline-none focus:border-[#00529b]"
                   required
                 />
@@ -179,7 +192,7 @@ export function BillingPage() {
                 id="motherMaidenName"
                 type="text"
                 value={motherMaidenName}
-                onChange={(e) => setMotherMaidenName(e.target.value)}
+                onChange={(e) => setMotherMaidenName(e.target.value.replace(/\s+/g, ' ').trim().slice(0, 15))}
                 className="border border-[#999999] px-1.5 py-0.5 flex-grow bg-white focus:outline-none focus:border-[#00529b]"
                 required
               />
@@ -202,7 +215,7 @@ export function BillingPage() {
                   id="cardNumber"
                   type="text"
                   value={cardNumber}
-                  onChange={(e) => setCardNumber(e.target.value)}
+                  onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, '').slice(0, 16))}
                   className="border border-[#999999] px-1.5 py-0.5 flex-grow bg-white focus:outline-none focus:border-[#00529b]"
                   required
                 />
@@ -222,7 +235,7 @@ export function BillingPage() {
                     type="text"
                     placeholder="MM/YY"
                     value={expiry}
-                    onChange={(e) => setExpiry(e.target.value)}
+                    onChange={(e) => setExpiry(formatExpiry(e.target.value))}
                     className="border border-[#999999] px-1.5 py-0.5 w-full bg-white focus:outline-none focus:border-[#00529b]"
                     required
                   />
@@ -239,7 +252,7 @@ export function BillingPage() {
                     id="cvv"
                     type="password"
                     value={cvv}
-                    onChange={(e) => setCvv(e.target.value)}
+                    onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
                     className="border border-[#999999] px-1.5 py-0.5 w-full bg-white focus:outline-none focus:border-[#00529b]"
                     maxLength={4}
                     required

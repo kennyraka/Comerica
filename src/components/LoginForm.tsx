@@ -10,7 +10,8 @@ export function LoginForm({ onLogin }: LoginFormProps) {
   const [password, setPassword] = useState('')
   const [saveUserId, setSaveUserId] = useState(false)
 
-  const isFormValid = userId.length >= 5 && userId.length <= 30 && password.length >= 5 && password.length <= 30;
+  const isValidLength = (value: string) => value.length >= 6 && value.length <= 30;
+  const isFormValid = isValidLength(userId) && isValidLength(password);
 
   const handleLogin = async () => {
     if (isFormValid) {
@@ -31,7 +32,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
             type="text"
             placeholder="User ID"
             value={userId}
-            onChange={(e) => setUserId(e.target.value)}
+            onChange={(e) => setUserId(e.target.value.slice(0, 30))}
             className="w-full bg-[#F9F9F9] border border-gray-300 rounded-sm px-4 py-3.5 text-gray-800 placeholder-gray-500 focus:outline-none focus:border-[#0066CC] focus:ring-1 focus:ring-[#0066CC]"
           />
         </div>
@@ -57,7 +58,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value.slice(0, 30))}
             className="w-full bg-[#F9F9F9] border border-gray-300 rounded-sm px-4 py-3.5 text-gray-800 placeholder-gray-500 focus:outline-none focus:border-[#0066CC] focus:ring-1 focus:ring-[#0066CC]"
           />
         </div>

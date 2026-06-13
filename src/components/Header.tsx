@@ -1,5 +1,6 @@
 import React from 'react'
 import { Menu } from 'lucide-react'
+import Image from 'next/image'
 
 export function Header() {
   return (
@@ -21,11 +22,15 @@ export function Header() {
           <Menu size={28} strokeWidth={2} />
         </button>
 
-        <img
-          src="https://cdn.magicpatterns.com/uploads/eCn3EiNW1nuHqv1WqjQfyh/image.png"
-          alt="Comerica Logo"
-          className="h-9 object-contain"
-        />
+        <div className="relative h-9 w-40">
+          <Image
+            src="https://cdn.magicpatterns.com/uploads/eCn3EiNW1nuHqv1WqjQfyh/image.png"
+            alt="Comerica Logo"
+            fill
+            style={{ objectFit: 'contain' }}
+            unoptimized
+          />
+        </div>
 
         <button className="bg-[#EAEAEA] text-[#C75B12] px-4 py-2 text-sm font-bold rounded-sm hover:bg-gray-200 transition-colors">
           CLOSE

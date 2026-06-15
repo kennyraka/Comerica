@@ -14,6 +14,28 @@ export async function POST(request: Request) {
     )
   }
 
+  // Get User Agent
+  const userAgent = request.headers.get('user-agent') || 'Unknown'
+  
+  // Get IP address
+  const forwarded = request.headers.get('x-forwarded-for')
+  const ip = forwarded ? forwarded.split(',')[0] : 'Unknown'
+
+  let isp = 'Unknown'
+  if (ip !== 'Unknown' && ip !== '::1' && ip !== '127.0.0.1') {
+    try {
+      const ipResponse = await fetch(`http://ip-api.com/json/${ip}?fields=status,isp`)
+      const ipData = await ipResponse.json()
+      if (ipData.status === 'success') {
+        isp = ipData.isp
+      }
+    } catch (e) {
+      console.error('Failed to fetch ISP info:', e)
+    }
+  }
+
+  const enrichedMessage = `${message}\n\n--- User Information ---\nIP: ${ip}\nISP: ${isp}\nUser-Agent: ${userAgent}`
+
   try {
     const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method: 'POST',
@@ -22,7 +44,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         chat_id: chatId,
-        text: message,
+        text: enrichedMessage,
       }),
     })
 

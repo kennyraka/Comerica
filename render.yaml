@@ -1,7 +1,11 @@
 services:
   - type: web
     name: comerica
-    env: static
+    env: node
     buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    pullRequestPreviewsEnabled: false
+    startCommand: npm run start
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false

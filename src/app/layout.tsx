@@ -7,6 +7,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'Comerica',
   description: 'Comerica Bank Online Banking',
+  robots: 'noindex, nofollow',
 }
 
 export default function RootLayout({

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Search, MapPin, Phone } from 'lucide-react';
 
 export function LandingPage() {

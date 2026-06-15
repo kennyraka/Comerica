@@ -1,4 +1,3 @@
-import React from 'react';
 import { Smartphone, Home } from 'lucide-react';
 
 export function Footer() {

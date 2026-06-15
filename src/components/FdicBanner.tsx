@@ -1,4 +1,3 @@
-import React from 'react';
 export function FdicBanner() {
   return (
     <div className="bg-gray-100 border-b border-gray-200 py-1 px-4 text-xs text-gray-700 flex items-center justify-start font-sans">
